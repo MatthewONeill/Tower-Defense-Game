@@ -1,0 +1,4 @@
+﻿Name,Spirte,Damage,Rate Of Fire (per second),Radius (px)
+Basic Tower Lv.1,assets/towers/basic_tower_1.png,5,1,125
+Basic Tower Lv.2,assets/towers/basic_tower_2.png,10,1,200
+Basic Tower Lv.3,assets/towers/basic_tower_3.png,20,1,275

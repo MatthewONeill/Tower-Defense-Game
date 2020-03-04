@@ -1,0 +1,6 @@
+﻿Name,Sprite,Health,Speed
+Lesser Alien,assets/enemies/lesser_alien.png,10,6
+Alien,assets/enemies/alien.png,25,6
+Greater Alien,assets/enemies/greater_alien.png,35,12
+Elder Alien,assets/enemies/greater_alien.png,125,4
+Larry,assets/enemies/larry.png,1000,2

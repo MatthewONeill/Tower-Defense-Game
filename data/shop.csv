@@ -1,0 +1,4 @@
+﻿Towers Names,Sprites,Sprites (disabled),Available,Cost,Radius
+Basic Tower Lv.1,assets/towers/basic_tower_1.png,assets/towers/basic_tower_1_disabled.png,True,50,125
+Basic Tower Lv.2,assets/towers/basic_tower_2.png,assets/towers/basic_tower_2_disabled.png,True,100,200
+Basic Tower Lv.3,assets/towers/basic_tower_3.png,assets/towers/basic_tower_3_disabled.png,True,150,275
