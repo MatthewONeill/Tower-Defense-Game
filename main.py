@@ -6,6 +6,7 @@ from helper_functions import *
 from settings import *
 from shop import *
 from tower import *
+from gui import *
 from enemy import *
 from map import *
 import pygame
@@ -38,7 +39,10 @@ def initialize():
                   "towers": [],
                   "enemies": [],
                   "shop": Shop("Space", settings),
+                  "gui": Gui(),
                   "map": Map(settings) }
+    game_data["gui"].setShop(game_data["shop"]);
+    game_data["gui"].setData(game_data);
 
     return game_data
 
@@ -51,7 +55,8 @@ def process(game_data):
     Input: game_data dictionary
     Output: None
     '''
-    for event in pygame.event.get():
+    events=pygame.event.get()
+    for event in events:
 
         # Handle [X] press
         if event.type == pygame.QUIT:
@@ -65,6 +70,8 @@ def process(game_data):
         # Handle Mouse Button Up
         if event.type == pygame.MOUSEBUTTONUP:
             game_data["clicked"] = False
+            
+    game_data["gui"].process(events)
 
 #### ====================================================================================================================== ####
 #############                                            UPDATE                                                    #############
@@ -76,6 +83,7 @@ def update(game_data):
     Output: None
     '''
     update_shop(game_data["shop"], game_data["current_currency"], game_data["settings"])
+    game_data["gui"].update()
     
     ## Replace this with code to update the Enemies ##
 
@@ -98,6 +106,7 @@ def render(game_data):
         render_enemy(enemy, game_data["screen"], game_data["settings"])
     for tower in game_data["towers"]:
         render_tower(tower, game_data["screen"], game_data["settings"])
+    game_data["gui"].render(game_data);
     pygame.display.update()
 
 #### ====================================================================================================================== ####
