@@ -28,8 +28,8 @@ def buy_item(game_data, tower):
 	Output: nothing'''
 	game_data["current_currency"] -= game_data["shop"].shop_data[tower]["cost"]
 
-def receive_currency(game_data, amount):
+def receive_currency(game_data):
 	'''adds given amount to total currency
 	Input: game_data, amount
 	Output: nothing'''
-	game_data["current_currency"] += amount
+	game_data["current_currency"] += 10
