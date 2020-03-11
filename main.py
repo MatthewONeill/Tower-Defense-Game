@@ -40,7 +40,13 @@ def initialize():
                   "enemies": [],
                   "shop": Shop("Space", settings),
                   "gui": Gui(),
-                  "map": Map(settings) }
+                  "map": Map(settings),
+                  "frame_rate": 40,
+                  "time_counter": 0,
+                  "enemy_list": ["Lesser Alien", "Lesser Alien", "Lesser Alien", "Alien", "Alien", "Alien",
+                                              "Greater Alien", "Greater Alien", "Elder Alien", "Elder Alien", "Larry"],
+                  "enemy_index": 0,
+                  "spawn_interval": 0}
     game_data["gui"].setShop(game_data["shop"]);
     game_data["gui"].setData(game_data);
 
@@ -86,10 +92,30 @@ def update(game_data):
     game_data["gui"].update()
     
     ## Replace this with code to update the Enemies ##
+    if game_data["spawn_interval"] == 0 and game_data["enemy_index"] != 11:
+        #spawn enemy
+        game_data["enemies"].append(Enemy(game_data["enemy_list"][game_data["enemy_index"]], (1, 0)))
+        game_data["spawn_interval"] = 6 #reset spawn_interval
+        if game_data["enemy_index"] < 11:
+            game_data["enemy_index"] += 1
+
+    for enemy in game_data["enemies"]:
+        if enemy.health <= 0:
+            game_data["enemies"].remove(enemy)
+        else:
+            update_enemy(enemy, game_data)
+            #print(enemy.location)
+
+    if game_data["time_counter"] == game_data["frame_rate"]:
+        # 1 second
+        game_data["spawn_interval"] -= 1
+        game_data["time_counter"] = 0 # reset time_counter
+    else:
+        game_data["time_counter"] += 1
 
     ## Replace this with code to update the Towers ##
 
-    pass # Remove this once you've implemented 'update()'
+    # Remove this once you've implemented 'update()'
 
 #### ====================================================================================================================== ####
 #############                                            RENDER                                                    #############
@@ -124,12 +150,15 @@ def main():
     '''
     # Initialize all required variables and objects
     game_data = initialize()
+    clock = pygame.time.Clock()
 
     # Begin Central Game Loop
     while game_data["stay_open"]:
         process(game_data)
         update(game_data)
         render(game_data)
+        
+        clock.tick(game_data["frame_rate"])
 
     # Exit pygame and Python
     pygame.quit()
