@@ -112,6 +112,7 @@ class Gui:
                     y=math.floor(mY/tileY)
                     xy=(x*tileX-20,y*tileY-20)
                     self.game_data["towers"].append(Tower(self.holding,xy))
+                    self.game_data["current_currency"]-=self.shop.shop_data[self.holding]["cost"];
                     self.holding=None #Release
                 else:
                     self.holding=None #Release
