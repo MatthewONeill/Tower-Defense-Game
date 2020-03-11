@@ -26,18 +26,106 @@ class Enemy:
         self.speed = Enemy.enemy_data[enemy_type]["speed"]
         self.location = location
         self.direction = None
+        self.previous_direction = "down"
+        self.wait_to_move = 12/self.speed
+        self.counter = 0
+        self.distance_per_frame = 40/(12/self.speed * 40)
+        self.reach_the_end = False
 
 #### ====================================================================================================================== ####
 #############                                       ENEMY_FUNCTIONS                                                #############
 #### ====================================================================================================================== ####
 
 def update_enemy(enemy, direction=None, damage=0):
-    # Replace this with code to update the enemy's location/etc.break
-    pass # Remove this once you've completed the code
+    if enemy.wait_to_move == 12/enemy.speed:
+        # check right
+        if (game_data["map"].map_data[(enemy.location[0] + 1, enemy.location[1])][
+            "value"] == "R" or game_data["map"].map_data[(enemy.location[0] + 1, enemy.location[1])][
+            "value"] == "E") and enemy.previous_direction != "left":
+            enemy.direction = "right"
+            if game_data["map"].map_data[(enemy.location[0] + 1, enemy.location[1])][
+            "value"] == "E":
+                enemy.reach_the_end = True
+        # check down
+        elif (game_data["map"].map_data[(enemy.location[0], enemy.location[1] + 1)][
+            "value"] == "R" or game_data["map"].map_data[(enemy.location[0], enemy.location[1] + 1)][
+            "value"] == "E") and enemy.previous_direction != "up":
+            enemy.direction = "down"
+            if game_data["map"].map_data[(enemy.location[0], enemy.location[1] + 1)][
+            "value"] == "E":
+                enemy.reach_the_end = True
+        # check left
+        elif (game_data["map"].map_data[(enemy.location[0] - 1, enemy.location[1])][
+            "value"] == "R" or game_data["map"].map_data[(enemy.location[0] - 1, enemy.location[1])][
+            "value"] == "E") and enemy.previous_direction != "right":
+            enemy.direction = "left"
+            if game_data["map"].map_data[(enemy.location[0] - 1, enemy.location[1])][
+            "value"] == "E":
+                enemy.reach_the_end = True
+        # check up
+        elif (game_data["map"].map_data[(enemy.location[0], enemy.location[1] - 1)][
+            "value"] == "R" or game_data["map"].map_data[(enemy.location[0], enemy.location[1] - 1)][
+            "value"] == "E") and enemy.previous_direction != "down":
+            enemy.direction = "up"
+            if game_data["map"].map_data[(enemy.location[0], enemy.location[1] - 1)][
+            "value"] == "E":
+                enemy.reach_the_end = True
 
+    if enemy.wait_to_move == 0:
+        #check right
+        if enemy.direction == "right":
+            if enemy.reach_the_end:
+                game_data["enemies"].remove(enemy)
+            enemy.location = (enemy.location[0]+1, enemy.location[1])
+            enemy.previous_direction = "right"
+        # check down
+        elif enemy.direction == "down":
+            if enemy.reach_the_end:
+                game_data["enemies"].remove(enemy)
+            enemy.location = (enemy.location[0], enemy.location[1]+1)
+            enemy.previous_direction = "down"
+        # check left
+        elif enemy.direction == "left":
+            if enemy.reach_the_end:
+                game_data["enemies"].remove(enemy)
+            enemy.location = (enemy.location[0]-1, enemy.location[1])
+            enemy.previous_direction = "left"
+        #check up
+        elif enemy.direction == "up":
+            if enemy.reach_the_end:
+                game_data["enemies"].remove(enemy)
+            enemy.location = (enemy.location[0], enemy.location[1]-1)
+            enemy.previous_direction = "up"
+
+        enemy.wait_to_move = 12/enemy.speed
+
+    elif game_data["time_counter"] == game_data["frame_rate"]:
+        # 1 second
+        enemy.wait_to_move -= 1
+        
+        
 def render_enemy(enemy, screen, settings):
     ''' Helper function that renders a single provided Enemy.
     Input: Enemy Object, screen (pygame display), Settings Object
     Output: None
     '''
-    screen.blit(enemy.sprite, enemy.location)
+    if enemy.direction == "right":
+        screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
+                    (enemy.location[0] * settings.tile_size[0] + enemy.counter, enemy.location[1] * settings.tile_size[1]))
+
+    elif enemy.direction == "down":
+        screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
+                    (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] + enemy.counter))
+        #print(enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] + enemy.counter)
+
+    elif enemy.direction == "left":
+        screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
+                    (enemy.location[0] * settings.tile_size[0] - enemy.counter, enemy.location[1] * settings.tile_size[1]))
+
+    elif enemy.direction == "up":
+        screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
+                    (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] - enemy.counter))
+
+    enemy.counter += enemy.distance_per_frame
+    if enemy.counter > 40.9:
+        enemy.counter = 0
