@@ -36,7 +36,7 @@ class Enemy:
 #############                                       ENEMY_FUNCTIONS                                                #############
 #### ====================================================================================================================== ####
 
-def update_enemy(enemy, direction=None, damage=0):
+def update_enemy(enemy, game_data,direction=None, damage=0):
     if enemy.wait_to_move == 12/enemy.speed:
         # check right
         if (game_data["map"].map_data[(enemy.location[0] + 1, enemy.location[1])][
