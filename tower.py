@@ -62,7 +62,7 @@ def attack_enemy(tower, enemy, game_data):
         tower.timer += tower.rate_of_fire
 
 def draw_line(tower, enemy, game_data):
-    pygame.draw.line(game_data["screen"], (0,0,0), (tower.location[0]+tower.sprite.get_width()/2, tower.location[1]+tower.sprite.get_height()/2), (enemy.location[0]*40+20, enemy.location[1]*40+20), 10)
+    pygame.draw.line(game_data["screen"], (120,120,255), (tower.location[0]+tower.sprite.get_width()/2, tower.location[1]+tower.sprite.get_height()/2), (enemy.location[0]*40+20, enemy.location[1]*40+20), 10)
 
 
 def render_tower(tower, screen, settings):
