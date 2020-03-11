@@ -101,11 +101,12 @@ def render(game_data):
     Output: None
     '''
     render_map(game_data["map"], game_data["screen"], game_data["settings"])
-    render_shop(game_data["shop"], game_data["screen"], game_data["settings"], game_data["current_currency"])
+   
     for enemy in game_data["enemies"]:
         render_enemy(enemy, game_data["screen"], game_data["settings"])
     for tower in game_data["towers"]:
         render_tower(tower, game_data["screen"], game_data["settings"])
+    render_shop(game_data["shop"], game_data["screen"], game_data["settings"], game_data["current_currency"])
     game_data["gui"].render(game_data);
     pygame.display.update()
 

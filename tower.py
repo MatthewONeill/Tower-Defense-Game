@@ -15,14 +15,14 @@ class Tower:
     tower_data = {}
     for tower in csv_loader("data/towers.csv"):
         tower_data[tower[0]] = { "sprite": tower[1], "damage": int(tower[2]), "rate_of_fire": int(tower[3]), "radius": int(tower[4]) }
-    def __init__(self, tower_type, location, radius_sprite):
+    def __init__(self, tower_type, location):
         ''' Initialization for Tower.
-        Input: tower_type (string), location (tuple), radius_sprite (pygame.Surface)
+        Input: tower_type (string), location (tuple)
         Output: A Tower Object
         '''
         self.name = tower_type
         self.sprite = pygame.image.load(Tower.tower_data[tower_type]["sprite"]).convert_alpha()
-        self.radius_sprite = radius_sprite
+        
         self.radius = Tower.tower_data[tower_type]["radius"]
         self.damage = Tower.tower_data[tower_type]["damage"]
         self.rate_of_fire = Tower.tower_data[tower_type]["rate_of_fire"]
