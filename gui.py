@@ -89,7 +89,6 @@ class Gui:
         return True
  
     def update(self):
-        print(self.game_data["towers"])
         #Main update loop for gui
         selected=self.shop.selected_item #Hook into the shop to determine which item the mouse is over
         
@@ -99,7 +98,6 @@ class Gui:
                 if self.shop.shop_data[selected]["available"] ==True: #Check if has enough moneys
                     self.holding=selected; #Tell game the user is holding a tower and which tower.
         if self.holding!=None:
-            print(self.holding)
             if not self.buttonDown:
                 #handle summoning and stuff here
                 (mX, mY) = pygame.mouse.get_pos() #Get mouse position

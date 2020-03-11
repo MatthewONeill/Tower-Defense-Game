@@ -90,7 +90,10 @@ def update(game_data):
     '''
     update_shop(game_data["shop"], game_data["current_currency"], game_data["settings"])
     game_data["gui"].update()
-    
+
+    for towers in game_data["towers"]:
+        update_tower(towers, game_data)
+
     ## Replace this with code to update the Enemies ##
     if game_data["spawn_interval"] == 0 and game_data["enemy_index"] != 11:
         #spawn enemy
@@ -101,8 +104,11 @@ def update(game_data):
 
     for enemy in game_data["enemies"]:
         if enemy.health <= 0:
+            receive_currency(game_data)
             game_data["enemies"].remove(enemy)
         else:
+            #print(enemy.location)
+            #print(enemy.health)
             update_enemy(enemy, game_data)
             #print(enemy.location)
 
@@ -131,6 +137,7 @@ def render(game_data):
     for enemy in game_data["enemies"]:
         render_enemy(enemy, game_data["screen"], game_data["settings"])
     for tower in game_data["towers"]:
+        print(tower.location)
         render_tower(tower, game_data["screen"], game_data["settings"])
         if(tower.inRange == True):
             draw_line(tower, tower.enemy, game_data)
