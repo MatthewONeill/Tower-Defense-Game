@@ -14,7 +14,7 @@ class Enemy:
     # Represents common data for all enemies - only loaded once, not per new Enemy (Class Variable)
     enemy_data = {}
     for enemy in csv_loader("data/enemies.csv"):
-        enemy_data[enemy[0]] = { "sprite": enemy[1], "health": int(enemy[2]), "speed": int(enemy[3]), "tier": int(enemy[4]) }
+        enemy_data[enemy[0]] = { "sprite": enemy[1], "health": int(enemy[2]), "speed": int(enemy[3]), "tier": int(enemy[4]), "damage": int(enemy[5]) }
     def __init__(self, enemy_type, location):
         ''' Initialization for Enemy.
         Input: enemy type (string), location (tuple of ints)
@@ -32,6 +32,7 @@ class Enemy:
         self.distance_per_frame = 40/(12/self.speed * 40)
         self.reach_the_end = False
         self.tier = Enemy.enemy_data[enemy_type]["tier"]
+        self.damage = Enemy.enemy_data[enemy_type]["damage"]
 
 #### ====================================================================================================================== ####
 #############                                       ENEMY_FUNCTIONS                                                #############
@@ -56,6 +57,7 @@ def update_enemy(enemy, game_data,direction=None, damage=0):
             if game_data["map"].map_data[(enemy.location[0], enemy.location[1] + 1)][
             "value"] == "E":
                 enemy.reach_the_end = True
+                
         # check left
         elif (game_data["map"].map_data[(enemy.location[0] - 1, enemy.location[1])][
             "value"] == "R" or game_data["map"].map_data[(enemy.location[0] - 1, enemy.location[1])][
@@ -64,6 +66,7 @@ def update_enemy(enemy, game_data,direction=None, damage=0):
             if game_data["map"].map_data[(enemy.location[0] - 1, enemy.location[1])][
             "value"] == "E":
                 enemy.reach_the_end = True
+                
         # check up
         elif (game_data["map"].map_data[(enemy.location[0], enemy.location[1] - 1)][
             "value"] == "R" or game_data["map"].map_data[(enemy.location[0], enemy.location[1] - 1)][
@@ -72,29 +75,34 @@ def update_enemy(enemy, game_data,direction=None, damage=0):
             if game_data["map"].map_data[(enemy.location[0], enemy.location[1] - 1)][
             "value"] == "E":
                 enemy.reach_the_end = True
+                
 
     if enemy.wait_to_move == 0:
         #check right
         if enemy.direction == "right":
             if enemy.reach_the_end:
+                game_data["endGame"] -= enemy.damage
                 game_data["enemies"].remove(enemy)
             enemy.location = (enemy.location[0]+1, enemy.location[1])
             enemy.previous_direction = "right"
         # check down
         elif enemy.direction == "down":
             if enemy.reach_the_end:
+                game_data["endGame"] -= enemy.damage
                 game_data["enemies"].remove(enemy)
             enemy.location = (enemy.location[0], enemy.location[1]+1)
             enemy.previous_direction = "down"
         # check left
         elif enemy.direction == "left":
             if enemy.reach_the_end:
+                game_data["endGame"] -= enemy.damage
                 game_data["enemies"].remove(enemy)
             enemy.location = (enemy.location[0]-1, enemy.location[1])
             enemy.previous_direction = "left"
         #check up
         elif enemy.direction == "up":
             if enemy.reach_the_end:
+                game_data["endGame"] -= enemy.damage
                 game_data["enemies"].remove(enemy)
             enemy.location = (enemy.location[0], enemy.location[1]-1)
             enemy.previous_direction = "up"
@@ -104,6 +112,8 @@ def update_enemy(enemy, game_data,direction=None, damage=0):
     elif game_data["time_counter"] == game_data["frame_rate"]:
         # 1 second
         enemy.wait_to_move -= 1
+
+        
 
 
 def render_enemy(enemy, screen, settings):

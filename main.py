@@ -47,7 +47,9 @@ def initialize():
                   "enemy_list": ["Lesser Alien", "Lesser Alien", "Lesser Alien", "Alien", "Alien", "Alien",
                                               "Greater Alien", "Greater Alien", "Elder Alien", "Elder Alien", "Larry"],
                   "enemy_index": 0,
-                  "spawn_interval": 0}
+                  "spawn_interval": 0,
+                  "endGame": 100}
+
     game_data["gui"].setShop(game_data["shop"]);
     game_data["gui"].setData(game_data);
 
@@ -119,8 +121,12 @@ def update(game_data):
     else:
         game_data["time_counter"] += 1
 
-    ## Replace this with code to update the Towers ##
+    if(game_data["endGame"] <= 0):
+        print("You Lost")
+        exit()
 
+    ## Replace this with code to update the Towers ##
+    print(game_data["endGame"])
     # Remove this once you've implemented 'update()'
 
 #### ====================================================================================================================== ####
