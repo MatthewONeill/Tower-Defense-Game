@@ -14,7 +14,7 @@ class Enemy:
     # Represents common data for all enemies - only loaded once, not per new Enemy (Class Variable)
     enemy_data = {}
     for enemy in csv_loader("data/enemies.csv"):
-        enemy_data[enemy[0]] = { "sprite": enemy[1], "health": int(enemy[2]), "speed": int(enemy[3]) }
+        enemy_data[enemy[0]] = { "sprite": enemy[1], "health": int(enemy[2]), "speed": int(enemy[3]), "tier": int(enemy[4]) }
     def __init__(self, enemy_type, location):
         ''' Initialization for Enemy.
         Input: enemy type (string), location (tuple of ints)
@@ -31,6 +31,7 @@ class Enemy:
         self.counter = 0
         self.distance_per_frame = 40/(12/self.speed * 40)
         self.reach_the_end = False
+        self.tier = Enemy.enemy_data[enemy_type]["tier"]
 
 #### ====================================================================================================================== ####
 #############                                       ENEMY_FUNCTIONS                                                #############
@@ -38,7 +39,6 @@ class Enemy:
 
 def update_enemy(enemy, game_data,direction=None, damage=0):
     
-    print(enemy.location)
     if enemy.wait_to_move == 12/enemy.speed:
         # check right
         if (game_data["map"].map_data[(enemy.location[0] + 1, enemy.location[1])][
@@ -118,7 +118,7 @@ def render_enemy(enemy, screen, settings):
     elif enemy.direction == "down":
         screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
                     (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] + enemy.counter))
-        #print(enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] + enemy.counter)
+        
 
     elif enemy.direction == "left":
         screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
@@ -131,3 +131,24 @@ def render_enemy(enemy, screen, settings):
     enemy.counter += enemy.distance_per_frame
     if enemy.counter > 40.9:
         enemy.counter = 0
+
+def downgrade_enemy(enemy, game_data):
+    if(enemy.tier > 1):
+        enemy.tier = enemy.tier - 1
+    
+        if(enemy.tier == 1):
+            game_data["enemies"].append(Enemy("Lesser Alien", enemy.location))
+            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+        elif(enemy.tier == 2):
+            game_data["enemies"].append(Enemy("Alien", enemy.location))
+            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+        elif(enemy.tier == 3):
+            game_data["enemies"].append(Enemy("Greater Alien", enemy.location))
+            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+        elif(enemy.tier == 4):
+            game_data["enemies"].append(Enemy("Elder Alien", enemy.location))
+            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+        elif(enemy.tier == 5):
+            game_data["enemies"].append(Enemy("Larry", enemy.location))
+            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+

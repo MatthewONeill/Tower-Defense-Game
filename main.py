@@ -1,3 +1,4 @@
+
 #### ====================================================================================================================== ####
 #############                                           IMPORTS                                                    #############
 #### ====================================================================================================================== ####
@@ -105,12 +106,11 @@ def update(game_data):
     for enemy in game_data["enemies"]:
         if enemy.health <= 0:
             receive_currency(game_data)
+            downgrade_enemy(enemy, game_data)
             game_data["enemies"].remove(enemy)
         else:
-            #print(enemy.location)
-            #print(enemy.health)
             update_enemy(enemy, game_data)
-            #print(enemy.location)
+           
 
     if game_data["time_counter"] == game_data["frame_rate"]:
         # 1 second
@@ -137,7 +137,6 @@ def render(game_data):
     for enemy in game_data["enemies"]:
         render_enemy(enemy, game_data["screen"], game_data["settings"])
     for tower in game_data["towers"]:
-        print(tower.location)
         render_tower(tower, game_data["screen"], game_data["settings"])
         if(tower.inRange == True):
             draw_line(tower, tower.enemy, game_data)
