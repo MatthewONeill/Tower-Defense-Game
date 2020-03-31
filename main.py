@@ -24,7 +24,7 @@ def initialize():
     '''
     # Initialize Pygame
     pygame.init()
-    pygame.display.set_caption("COMP 1501 - Tutorial 7: Tower Defense (TD) Base Code")
+    pygame.display.set_caption("Fight Fire With Water")
 
     # Initialize the Settings Object
     settings = Settings()
