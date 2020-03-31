@@ -147,18 +147,18 @@ def downgrade_enemy(enemy, game_data):
         enemy.tier = enemy.tier - 1
     
         if(enemy.tier == 1):
-            game_data["enemies"].append(Enemy("Lesser Alien", enemy.location))
+            game_data["enemies"].append(Enemy("Red Flame", enemy.location))
             game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
         elif(enemy.tier == 2):
-            game_data["enemies"].append(Enemy("Alien", enemy.location))
+            game_data["enemies"].append(Enemy("Orange Flame", enemy.location))
             game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
         elif(enemy.tier == 3):
-            game_data["enemies"].append(Enemy("Greater Alien", enemy.location))
+            game_data["enemies"].append(Enemy("Yellow Flame", enemy.location))
             game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
         elif(enemy.tier == 4):
-            game_data["enemies"].append(Enemy("Elder Alien", enemy.location))
+            game_data["enemies"].append(Enemy("White Flame", enemy.location))
             game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
         elif(enemy.tier == 5):
-            game_data["enemies"].append(Enemy("Larry", enemy.location))
+            game_data["enemies"].append(Enemy("Blue Flame", enemy.location))
             game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
 
