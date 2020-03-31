@@ -44,8 +44,8 @@ def initialize():
                   "map": Map(settings),
                   "frame_rate": 40,
                   "time_counter": 0,
-                  "enemy_list": ["Lesser Alien", "Lesser Alien", "Lesser Alien", "Alien", "Alien", "Alien",
-                                              "Greater Alien", "Greater Alien", "Elder Alien", "Elder Alien", "Larry"],
+                  "enemy_list": ["Red Flame", "Red Flame", "Red Flame", "Orange Flame", "Orange Flame", "Orange Flame",
+                                              "Yellow Flame", "Yellow Flame", "White Flame", "White Flame", "Blue Flame"],
                   "enemy_index": 0,
                   "spawn_interval": 0,
                   "endGame": 100}
