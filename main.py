@@ -139,14 +139,26 @@ def render(game_data):
     Output: None
     '''
     render_map(game_data["map"], game_data["screen"], game_data["settings"])
-   
+    screen=game_data["screen"]
     for enemy in game_data["enemies"]:
         render_enemy(enemy, game_data["screen"], game_data["settings"])
     for tower in game_data["towers"]:
         render_tower(tower, game_data["screen"], game_data["settings"])
-        if(tower.inRange == True):
-            draw_line(tower, tower.enemy, game_data)
+        if tower.name=="Hoser":
+            if tower.inRange == True:
+                draw_line(tower, tower.enemy, game_data)
+        elif tower.name=="Water Balloons":
+            if tower.ani == True:
+                pygame.draw.circle(screen, (125, 125, 255,120), (tower.aoe[0]+50,tower.aoe[1]+50),100, 3)
+        elif tower.name=="Sprinkler":
+            if tower.inRange == True:
+                radius=tower.radius
+                radius=(radius-(1/(tower.tencount+1))*radius)
+                radius=int(radius)
+                if radius>5:
+                    pygame.draw.circle(screen, (115, 115, 255,120), (tower.location[0]+int(radius/2),tower.location[1]+int(radius/2)),radius, 5)
             
+                
     render_shop(game_data["shop"], game_data["screen"], game_data["settings"], game_data["current_currency"])
     game_data["gui"].render(game_data);
     pygame.display.update()
