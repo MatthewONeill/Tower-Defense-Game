@@ -31,7 +31,7 @@ def initialize():
 
     # Initialize game_data and return it
     game_data = { "screen": pygame.display.set_mode(settings.window_size),
-                  "title_screen": pygame.transform.scale(pygame.image.load("title_screen.png").convert_alpha(), (1000,800)),
+                  "title_screen": pygame.transform.scale(pygame.image.load("assets\\ui\\title_screen.png").convert_alpha(), (1000,800)),
                   "font": pygame.font.Font(pygame.font.get_default_font(), 32),
                   "current_currency": settings.starting_currency,
                   "current_wave": 0,
@@ -47,7 +47,7 @@ def initialize():
                   "frame_rate": 40,
                   "time_counter": 0,
                   "enemy_list": ["Red Flame", "Red Flame", "Red Flame", "Orange Flame", "Orange Flame", "Orange Flame",
-                                              "Yellow Flame", "Yellow Flame", "White Flame", "White Flame", "Blue Flame"],
+                                              "Yellow Flame", "Yellow Flame", "White Flame", "White Flame", "Blue Flame", "Red Flame", "Red Flame", "Red Flame", "Red Flame","White Flame", "Yellow Flame", "Yellow Flame", "Yellow Flame","Orange Flame","Blue Flame"],
                   "enemy_index": 0,
                   "spawn_interval": 0,
                   "endGame": 100}
@@ -72,11 +72,16 @@ def process(game_data):
         # Handle [X] press
         if event.type == pygame.QUIT:
             game_data["stay_open"] = False
+            
 
         # Handle Mouse Button Down
         if event.type == pygame.MOUSEBUTTONDOWN:
             game_data["clicked"] = True
             game_data["selected_tower"] = False
+            for button in game_data["gui"].buttonList:
+                pos = pygame.mouse.get_pos()
+                if pos[0]>button.position[0] and pos[0]< button.position[0]+button.size[0] and pos[1]>button.position[1] and pos[1]< button.position[1]+button.size[1]:
+                    button.click()
 
         # Handle Mouse Button Up
         if event.type == pygame.MOUSEBUTTONUP:
@@ -100,14 +105,15 @@ def update(game_data):
         update_tower(towers, game_data)
 
     ## Replace this with code to update the Enemies ##
-    if game_data["spawn_interval"] == 0 and game_data["enemy_index"] != 11:
+    if game_data["spawn_interval"] == 0 and game_data["enemy_index"] != len (game_data["enemy_list"]) and not checkBoss(game_data["enemies"]):
         #spawn enemy
         game_data["enemies"].append(Enemy(game_data["enemy_list"][game_data["enemy_index"]], (1, 0)))
         game_data["spawn_interval"] = 6 #reset spawn_interval
-        if game_data["enemy_index"] < 11:
+        if game_data["enemy_index"] < len (game_data["enemy_list"]):
             game_data["enemy_index"] += 1
 
     for enemy in game_data["enemies"]:
+        
         if enemy.health <= 0:
             receive_currency(game_data)
             downgrade_enemy(enemy, game_data)
@@ -122,14 +128,16 @@ def update(game_data):
 
     if game_data["time_counter"] == game_data["frame_rate"]:
         # 1 second
-        game_data["spawn_interval"] -= 1
+        if not checkBoss(game_data["enemies"]):
+            game_data["spawn_interval"] -= 1
         game_data["time_counter"] = 0 # reset time_counter
     else:
         game_data["time_counter"] += 1
 
     if(game_data["endGame"] <= 0):
-        print("You Lost")
-        exit()
+        
+        #game_data["stay_open"]=False
+        game_data["gui"].endGame()
 
 
     ## Replace this with code to update the Towers ##
@@ -150,13 +158,15 @@ def render(game_data):
     for enemy in game_data["enemies"]:
         render_enemy(enemy, game_data["screen"], game_data["settings"])
     for tower in game_data["towers"]:
-        render_tower(tower, game_data["screen"], game_data["settings"])
+        
         if tower.name=="Hoser":
             if tower.inRange == True:
                 draw_line(tower, tower.enemy, game_data)
         elif tower.name=="Water Balloons":
             if tower.ani == True:
-                pygame.draw.circle(screen, (125, 125, 255,120), (int(tower.aoe[0]+20),int(tower.aoe[1]+20)),100, 3)
+                pygame.draw.circle(screen, (125, 125, 255,120), (int(tower.aoe[0]+20),int(tower.aoe[1]+20)),100, 10)
+                pygame.draw.circle(screen, (175, 175, 255,120), (int(tower.aoe[0]+20),int(tower.aoe[1]+20)),75, 10)
+                pygame.draw.circle(screen, (200, 200, 255,120), (int(tower.aoe[0]+20),int(tower.aoe[1]+20)),33, 10)
         elif tower.name=="Sprinkler":
             if tower.inRange == True:
                 radius=tower.radius
@@ -166,7 +176,7 @@ def render(game_data):
                 if radius>5:
                     
                     pygame.draw.circle(screen, (115, 115, 255,120), (tower.location[0]+int(radius/2),tower.location[1]+int(radius/2)),radius, 5)
-            
+        render_tower(tower, game_data["screen"], game_data["settings"])
                 
     render_shop(game_data["shop"], game_data["screen"], game_data["settings"], game_data["current_currency"])
     game_data["gui"].render(game_data);
@@ -181,43 +191,51 @@ def main():
     Input: None
     Output: None
     '''
-    # Initialize all required variables and objects
-    game_data = initialize()
-    clock = pygame.time.Clock()
+    restart = True
+  
+    while restart==True:
+        # Initialize all required variables and objects
+        game_data = initialize()
+        clock = pygame.time.Clock()
+    
+        stop = False
+    
+        text = game_data["font"].render('Press Space to Play', True, (255,255,255))
+        textRect = text.get_rect()
+        textRect.center = (500, 775)        
 
-    stop = False
-    text = game_data["font"].render('Press Space to Play', True, (255,255,255))
-    textRect = text.get_rect()
-    textRect.center = (500, 775)
-
-    while stop == False:
-        game_data["screen"].blit(game_data["title_screen"], (0,0))
-        game_data["screen"].blit(text, textRect)
-        
-
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    stop = True
-        
-        pygame.display.update()
-        
-       
+        while stop == False:
+            game_data["screen"].blit(game_data["title_screen"], (0,0))
+            game_data["screen"].blit(text, textRect)
             
-
-
-    # Begin Central Game Loop
-    while game_data["stay_open"]:
-        process(game_data)
-        for i in range(0,game_data["gui"].speed):
+    
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        stop = True
+                if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()                       
             
-            update(game_data)
-        
-        render(game_data)
-        
-        clock.tick(game_data["frame_rate"])
-
-    # Exit pygame and Python
+            pygame.display.update()
+            
+           
+                
+    
+    
+        # Begin Central Game Loop
+        while game_data["stay_open"]:
+            process(game_data)
+            if game_data["gui"].pause==False:
+                for i in range(0,game_data["gui"].speed):
+                    
+                    update(game_data)
+                
+            render(game_data)
+            
+            clock.tick(game_data["frame_rate"])
+    
+        # Exit pygame and Python
     pygame.quit()
     sys.exit()
 

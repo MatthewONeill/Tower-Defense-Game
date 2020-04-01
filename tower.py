@@ -21,6 +21,8 @@ class Tower:
         Input: tower_type (string), location (tuple)
         Output: A Tower Object
         '''
+        self.aniTimer=12
+        self.facingLeft=True
         self.name = tower_type
         self.sprite = pygame.image.load(Tower.tower_data[tower_type]["sprite"]).convert_alpha()
         self.tencount =0 #a counter for certain animations 
@@ -41,8 +43,15 @@ class Tower:
 #### ====================================================================================================================== ####
 
 def update_tower(tower, game_data):
-    tower.ani=False
-    tower.aoe=None
+    if tower.name!="Water Balloons":
+        tower.ani=False
+    else:
+        if tower.aniTimer==0:
+            tower.ani=False
+            tower.aoe=None
+            tower.aniTimer=12
+        else:
+            tower.aniTimer-=1
     tower.inRange = False
     if tower.name=="Hoser":
         check_enemy(tower, game_data)
@@ -94,7 +103,10 @@ def check_enemy(tower, game_data):
         
             
     if tower.enemy != None:
-        
+        if tower.enemy.location[0]*40>tower.location[0]:
+            tower.facingLeft=False
+        else:
+            tower.facingLeft=True
         attack_enemy(tower, tower.enemy, game_data)    
             
             
@@ -141,12 +153,21 @@ def attack_enemy(tower, enemy, game_data):
         tower.timer += tower.rate_of_fire
 
 def draw_line(tower, enemy, game_data):
-    pygame.draw.line(game_data["screen"], (120,120,255), (tower.location[0]+tower.sprite.get_width()/2, tower.location[1]+tower.sprite.get_height()/2), (enemy.realLocation[0]+20, enemy.realLocation[1]+20), 10)
-
+    if tower.facingLeft:
+        pygame.draw.line(game_data["screen"], (120,120,255), (tower.location[0]+tower.sprite.get_width()/2-43, tower.location[1]+tower.sprite.get_height()/2-17), (enemy.realLocation[0]+20, enemy.realLocation[1]+20), 10)
+    else:
+        pygame.draw.line(game_data["screen"], (120,120,255), (tower.location[0]+tower.sprite.get_width()/2+43, tower.location[1]+tower.sprite.get_height()/2-17), (enemy.realLocation[0]+20, enemy.realLocation[1]+20), 10)
 
 def render_tower(tower, screen, settings):
     ''' Helper function that renders a single provided Tower.
     Input: Tower Object, screen (pygame display), Settings Object
     Output: None
     '''
-    screen.blit(tower.sprite, tower.location)
+    if tower.name!="Sprinkler":
+        if tower.facingLeft:
+            screen.blit(tower.sprite, tower.location)
+        
+        else:
+            screen.blit(pygame.transform.flip(tower.sprite, True, False), tower.location)
+    else:
+        screen.blit(tower.sprite, tower.location)

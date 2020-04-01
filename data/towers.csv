@@ -1,4 +1,4 @@
 ﻿Name,Spirte,Damage,Rate Of Fire (per second),Radius (px)
-Hoser,assets/towers/basic_tower_1.png,3,10,150
-Water Balloons,assets/towers/basic_tower_2.png,30,1,200
-Sprinkler,assets/towers/basic_tower_3.png,2,50,100
+Hoser,assets/towers/basic_tower_1.png,1,8,150
+Water Balloons,assets/towers/basic_tower_2.png,10,1,200
+Sprinkler,assets/towers/basic_tower_3.png,1,40,100

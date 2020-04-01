@@ -13,6 +13,14 @@ class Gui:
     def __init__(self):
         self.holding=None
         self.buttonDown=False
+        self.speed=1;
+        self.pause=False
+        self.buttonList=[]
+        self.graphicList=[]
+        self.graphicList.append(pygame.transform.scale(pygame.image.load("assets\\ui\\speed.png").convert_alpha(), (100,50)))
+        self.graphicList.append(pygame.transform.scale(pygame.image.load("assets\\ui\\speed2.png").convert_alpha(), (100,50)))
+        self.graphicList.append(pygame.transform.scale(pygame.image.load("assets\\ui\\play.png").convert_alpha(), (50,50)))
+        self.graphicList.append(pygame.transform.scale(pygame.image.load("assets\\ui\\pause.png").convert_alpha(), (50,50)))
   
         
         
@@ -21,7 +29,26 @@ class Gui:
         self.shop=shop;
     def setData(self,data): #Initialize some values
         self.game_data=data 
+        tempbutton= Button((800,700),(100,50),self.speedToggle,self.graphicList[0])
+        self.buttonList.append(tempbutton);
+        tempbutton= Button((800,590),(50,50),self.pauseToggle,self.graphicList[3])
+        self.buttonList.append(tempbutton);        
         
+    def speedToggle(self):
+        if self.speed==1:
+            self.speed=2
+            self.buttonList[0].sprite=self.graphicList[1]
+        else:
+            self.speed=1
+            self.buttonList[0].sprite=self.graphicList[0]
+            
+    def pauseToggle(self):
+        if self.pause:
+            self.pause=False
+            self.buttonList[1].sprite=self.graphicList[3]
+        else:
+            self.pause=True
+            self.buttonList[1].sprite=self.graphicList[2]    
     def process(self,events):
         #dedicated input processing for Gui
         for event in events:
@@ -87,7 +114,11 @@ class Gui:
             if mX>x and mX<x+100 and mY>y and mY<y+100:
                 return False
         return True
- 
+    def exitGame(self):
+        pygame.quit()
+        sys.exit()
+    def replayGame(self):
+        self.game_data["stay_open"]=False
     def update(self):
         #Main update loop for gui
         selected=self.shop.selected_item #Hook into the shop to determine which item the mouse is over
@@ -115,7 +146,15 @@ class Gui:
                 else:
                     self.holding=None #Release
    
-    
+    def endGame(self):
+        self.buttonList=[]
+        self.graphicList=[]
+        self.graphicList.append(pygame.transform.scale(pygame.image.load("assets\\ui\\replay.png").convert_alpha(), (100,100)))
+        self.graphicList.append(pygame.transform.scale(pygame.image.load("assets\\ui\\exit.png").convert_alpha(), (100,100)))
+        tempbutton= Button((250,400),(100,100),self.replayGame,self.graphicList[0])
+        self.buttonList.append(tempbutton);
+        tempbutton= Button((450,400),(100,100),self.exitGame,self.graphicList[1])
+        self.buttonList.append(tempbutton);        
     def render(self,game_data):
         (mX, mY) = pygame.mouse.get_pos() #Get mouse position
         screen=game_data["screen"]
@@ -123,5 +162,27 @@ class Gui:
             pygame.draw.circle(screen, (255, 255, 255,120), (mX, mY),int(self.shop.shop_data[self.holding]["radius"]), 3)
             sprite=self.shop.shop_data[self.holding]["sprite"]
             screen.blit(sprite, (mX-sprite.get_width()/2,mY-sprite.get_height()/2))
+        for button in self.buttonList:
+            screen.blit(button.sprite, button.position)
+            
+        text = game_data["font"].render('HP: '+str(game_data["endGame"]), True, (255,255,255))
+        textRect = text.get_rect()
+        textRect.center = (900, 575)
+        screen.blit(text, textRect)
         pass
+    
+    
+    
     pass
+
+class Button:
+    def __init__(self,pos,size,behaviour,sprite):
+        self.position=pos
+        self.size=size
+        self.run=behaviour
+        self.toggle=False
+        self.sprite=sprite
+    def update(self):
+        pass
+    def click(self):
+        self.run();
