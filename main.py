@@ -112,6 +112,9 @@ def update(game_data):
             game_data["enemies"].remove(enemy)
         else:
             update_enemy(enemy, game_data)
+            
+    if len(game_data["enemies"])>0:
+        print(game_data["enemies"][0].location)
            
 
     if game_data["time_counter"] == game_data["frame_rate"]:
@@ -125,8 +128,9 @@ def update(game_data):
         print("You Lost")
         exit()
 
+
     ## Replace this with code to update the Towers ##
-    print(game_data["endGame"])
+  
     # Remove this once you've implemented 'update()'
 
 #### ====================================================================================================================== ####
@@ -149,13 +153,15 @@ def render(game_data):
                 draw_line(tower, tower.enemy, game_data)
         elif tower.name=="Water Balloons":
             if tower.ani == True:
-                pygame.draw.circle(screen, (125, 125, 255,120), (tower.aoe[0]+50,tower.aoe[1]+50),100, 3)
+                pygame.draw.circle(screen, (125, 125, 255,120), (int(tower.aoe[0]+50),int(tower.aoe[1]+50)),100, 3)
         elif tower.name=="Sprinkler":
             if tower.inRange == True:
                 radius=tower.radius
                 radius=(radius-(1/(tower.tencount+1))*radius)
                 radius=int(radius)
+                
                 if radius>5:
+                    
                     pygame.draw.circle(screen, (115, 115, 255,120), (tower.location[0]+int(radius/2),tower.location[1]+int(radius/2)),radius, 5)
             
                 

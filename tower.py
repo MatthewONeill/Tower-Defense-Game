@@ -61,13 +61,13 @@ def update_tower(tower, game_data):
 
 def aoe_enemy(tower, game_data):
     for enemy in game_data["enemies"]:
-        distance = math.sqrt((enemy.location[0]*40 - tower.location[0])**2 + (enemy.location[1]*40 - tower.location[1])**2) #distance between enemy and tower
+        distance = math.sqrt((enemy.realLocation[0] - tower.location[0])**2 + (enemy.realLocation[1] - tower.location[1])**2) #distance between enemy and tower
         if (distance <= tower.radius): #enemy is in range
             tower.inRange = True
             
             if(tower.timer >= 100):
      
-                targets = findTargetsInRange(tower,100,game_data)
+                targets = findTargetsInRange(tower.location,100,game_data)
                 tower.timer = 0
                 for enemies in targets:
                     enemies.health -= tower.damage
@@ -82,21 +82,27 @@ def aoe_enemy(tower, game_data):
             tower.inRange = False
             
 def check_enemy(tower, game_data):
+    refDistance=0
     for enemy in game_data["enemies"]:
-        distance = math.sqrt((enemy.location[0]*40 - tower.location[0])**2 + (enemy.location[1]*40 - tower.location[1])**2) #distance between enemy and tower
+        distance = math.sqrt((enemy.realLocation[0] - tower.location[0])**2 + (enemy.realLocation[1] - tower.location[1])**2) #distance between enemy and tower
         if (distance <= tower.radius): #enemy is in range
             tower.inRange = True
-            tower.enemy = enemy
-            attack_enemy(tower, enemy, game_data)
-        else:
-            tower.inRange = False
+
+        if enemy.distance>refDistance:
+            tower.enemy=enemy
+            refDistance=enemy.distance
+        
+            
+        if tower.enemy != None:
+        
+            attack_enemy(tower, enemy, game_data)    
             
             
 
 def findTargetsInRange(enemyx,aoe,game_data):
     h=[]
     for enemy in game_data["enemies"]:
-        distance = math.sqrt((enemy.location[0]*40 - enemyx.location[0])**2 + (enemy.location[1]*40 - enemyx.location[1])**2) #distance between enemy and tower
+        distance = math.sqrt((enemy.realLocation[0] - enemyx[0])**2 + (enemy.realLocation[1]- enemyx[1])**2) #distance between enemy and tower
         if (distance <= aoe): #enemy is in range
             h.append(enemy)
     return h
@@ -109,12 +115,12 @@ def findTargetsInRange(enemyx,aoe,game_data):
 def attack_enemy(tower, enemy, game_data):
     if(tower.timer >= 100):
         if tower.name=="Water Balloons":
-            targets = findTargetsInRange(enemy,100,game_data)
+            targets = findTargetsInRange(enemy.realLocation,100,game_data)
             tower.timer = 0
             for enemies in targets:
                 enemies.health -= tower.damage
             tower.ani=True   
-            tower.aoe=enemy.location
+            tower.aoe=enemy.realLocation
         
         else:        
             tower.timer = 0
@@ -124,7 +130,7 @@ def attack_enemy(tower, enemy, game_data):
         tower.timer += tower.rate_of_fire
 
 def draw_line(tower, enemy, game_data):
-    pygame.draw.line(game_data["screen"], (120,120,255), (tower.location[0]+tower.sprite.get_width()/2, tower.location[1]+tower.sprite.get_height()/2), (enemy.location[0]*40+20, enemy.location[1]*40+20), 10)
+    pygame.draw.line(game_data["screen"], (120,120,255), (tower.location[0]+tower.sprite.get_width()/2, tower.location[1]+tower.sprite.get_height()/2), (enemy.realLocation[0]+20, enemy.realLocation[1]+20), 10)
 
 
 def render_tower(tower, screen, settings):

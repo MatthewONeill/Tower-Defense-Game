@@ -20,6 +20,8 @@ class Enemy:
         Input: enemy type (string), location (tuple of ints)
         Output: An Enemy Object
         '''
+        self.realLocation=(0,0)
+        self.distance = 0
         self.name = enemy_type
         self.sprite = pygame.image.load(Enemy.enemy_data[enemy_type]["sprite"]).convert_alpha()
         self.health = Enemy.enemy_data[enemy_type]["health"]
@@ -39,7 +41,7 @@ class Enemy:
 #### ====================================================================================================================== ####
 
 def update_enemy(enemy, game_data,direction=None, damage=0):
-    
+    enemy.distance+=enemy.speed
     if enemy.wait_to_move == 12/enemy.speed:
         # check right
         if (game_data["map"].map_data[(enemy.location[0] + 1, enemy.location[1])][
@@ -124,20 +126,20 @@ def render_enemy(enemy, screen, settings):
     if enemy.direction == "right":
         screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
                     (enemy.location[0] * settings.tile_size[0] + enemy.counter, enemy.location[1] * settings.tile_size[1]))
-
+        enemy.realLocation= (enemy.location[0] * settings.tile_size[0] + enemy.counter, enemy.location[1] * settings.tile_size[1])
     elif enemy.direction == "down":
         screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
                     (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] + enemy.counter))
         
-
+        enemy.realLocation=  (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] + enemy.counter)
     elif enemy.direction == "left":
         screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
                     (enemy.location[0] * settings.tile_size[0] - enemy.counter, enemy.location[1] * settings.tile_size[1]))
-
+        enemy.realLocation = (enemy.location[0] * settings.tile_size[0] - enemy.counter, enemy.location[1] * settings.tile_size[1])
     elif enemy.direction == "up":
         screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
                     (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] - enemy.counter))
-
+        enemy.realLocation = (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] - enemy.counter)
     enemy.counter += enemy.distance_per_frame
     if enemy.counter > 40.9:
         enemy.counter = 0
