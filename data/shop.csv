@@ -1,4 +1,4 @@
 ﻿Towers Names,Sprites,Sprites (disabled),Available,Cost,Radius
-Hoser,assets/towers/basic_tower_1.png,assets/towers/basic_tower_1_disabled.png,TRUE,50,150
-Sprinkler,assets/towers/basic_tower_3.png,assets/towers/basic_tower_3_disabled.png,TRUE,100,100
-Water Balloons,assets/towers/basic_tower_2.png,assets/towers/basic_tower_2_disabled.png,TRUE,100,200
+Hoser,assets/towers/basic_tower_1.png,assets/towers/basic_tower_1_disabled.png,TRUE,50,175
+Sprinkler,assets/towers/basic_tower_3.png,assets/towers/basic_tower_3_disabled.png,TRUE,100,125
+Water Balloons,assets/towers/basic_tower_2.png,assets/towers/basic_tower_2_disabled.png,TRUE,100,220
