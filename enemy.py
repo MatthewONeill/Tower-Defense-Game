@@ -31,6 +31,7 @@ class Enemy:
         self.counter = 0
         self.distance_per_frame = 40/(12/self.speed * 40)
         self.reach_the_end = False
+        self.distance=0;
         self.tier = Enemy.enemy_data[enemy_type]["tier"]
         self.damage = Enemy.enemy_data[enemy_type]["damage"]
 
@@ -39,7 +40,7 @@ class Enemy:
 #### ====================================================================================================================== ####
 
 def update_enemy(enemy, game_data,direction=None, damage=0):
-    
+    enemy.distance+=enemy.speed
     if enemy.wait_to_move == 12/enemy.speed:
         # check right
         if (game_data["map"].map_data[(enemy.location[0] + 1, enemy.location[1])][

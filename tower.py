@@ -44,14 +44,21 @@ def update_tower(tower, game_data):
 
 
 def check_enemy(tower, game_data):
+    refDistance=0
     for enemy in game_data["enemies"]:
         distance = math.sqrt((enemy.location[0]*40 - tower.location[0])**2 + (enemy.location[1]*40 - tower.location[1])**2) #distance between enemy and tower
         if (distance <= tower.radius): #enemy is in range
             tower.inRange = True
-            tower.enemy = enemy
-            attack_enemy(tower, enemy, game_data)
-        else:
-            tower.inRange = False
+
+            if enemy.distance>refDistance:
+                tower.enemy=enemy
+                refDistance=enemy.distance
+        
+            
+    if tower.enemy != None:
+        
+        attack_enemy(tower, tower.enemy, game_data)    
+
             
 
 def attack_enemy(tower, enemy, game_data):
