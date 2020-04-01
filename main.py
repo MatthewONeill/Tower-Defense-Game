@@ -31,6 +31,8 @@ def initialize():
 
     # Initialize game_data and return it
     game_data = { "screen": pygame.display.set_mode(settings.window_size),
+                  "title_screen": pygame.transform.scale(pygame.image.load("title_screen.png").convert_alpha(), (1000,800)),
+                  "font": pygame.font.Font(pygame.font.get_default_font(), 32),
                   "current_currency": settings.starting_currency,
                   "current_wave": 0,
                   "stay_open": True,
@@ -114,8 +116,8 @@ def update(game_data):
         else:
             update_enemy(enemy, game_data)
             
-    if len(game_data["enemies"])>0:
-        print((game_data["enemies"][0].location[0]*40+game_data["enemies"][0].counter,game_data["enemies"][0].location[1]*40))
+    #if len(game_data["enemies"])>0:
+        #print((game_data["enemies"][0].location[0]*40+game_data["enemies"][0].counter,game_data["enemies"][0].location[1]*40))
            
 
     if game_data["time_counter"] == game_data["frame_rate"]:
@@ -182,6 +184,27 @@ def main():
     # Initialize all required variables and objects
     game_data = initialize()
     clock = pygame.time.Clock()
+
+    stop = False
+    text = game_data["font"].render('Press Space to Play', True, (255,255,255))
+    textRect = text.get_rect()
+    textRect.center = (500, 775)
+
+    while stop == False:
+        game_data["screen"].blit(game_data["title_screen"], (0,0))
+        game_data["screen"].blit(text, textRect)
+        
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    stop = True
+        
+        pygame.display.update()
+        
+       
+            
+
 
     # Begin Central Game Loop
     while game_data["stay_open"]:
