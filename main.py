@@ -186,7 +186,10 @@ def main():
     # Begin Central Game Loop
     while game_data["stay_open"]:
         process(game_data)
-        update(game_data)
+        for i in range(0,game_data["gui"].speed):
+            
+            update(game_data)
+        
         render(game_data)
         
         clock.tick(game_data["frame_rate"])
