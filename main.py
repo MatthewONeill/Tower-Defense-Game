@@ -153,7 +153,7 @@ def render(game_data):
                 draw_line(tower, tower.enemy, game_data)
         elif tower.name=="Water Balloons":
             if tower.ani == True:
-                pygame.draw.circle(screen, (125, 125, 255,120), (int(tower.aoe[0]+50),int(tower.aoe[1]+50)),100, 3)
+                pygame.draw.circle(screen, (125, 125, 255,120), (int(tower.aoe[0]+20),int(tower.aoe[1]+20)),100, 3)
         elif tower.name=="Sprinkler":
             if tower.inRange == True:
                 radius=tower.radius
