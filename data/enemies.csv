@@ -1,6 +1,6 @@
 ﻿Name,Sprite,Health,Speed,Tier,Damage
-Red Flame,assets/enemies/red_flame.png,10,6,1,5
-Orange Flame,assets/enemies/orange_flame.png,25,6,2,10
-Yellow Flame,assets/enemies/yellow_flame.png,35,12,3,15
-White Flame,assets/enemies/white_flame.png,125,4,4,20
+Red Flame,assets/enemies/red_flame.png,10,2,1,5
+Orange Flame,assets/enemies/orange_flame.png,25,2,2,10
+Yellow Flame,assets/enemies/yellow_flame.png,35,2,3,15
+White Flame,assets/enemies/white_flame.png,125,2,4,20
 Blue Flame,assets/enemies/blue_flame.png,1000,2,5,50

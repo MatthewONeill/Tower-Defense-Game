@@ -114,7 +114,7 @@ def update(game_data):
             update_enemy(enemy, game_data)
             
     if len(game_data["enemies"])>0:
-        print(game_data["enemies"][0].location)
+        print((game_data["enemies"][0].location[0]*40+game_data["enemies"][0].counter,game_data["enemies"][0].location[1]*40))
            
 
     if game_data["time_counter"] == game_data["frame_rate"]:

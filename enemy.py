@@ -149,18 +149,44 @@ def downgrade_enemy(enemy, game_data):
         enemy.tier = enemy.tier - 1
     
         if(enemy.tier == 1):
-            game_data["enemies"].append(Enemy("Red Flame", enemy.location))
-            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+            newflame=Enemy("Red Flame", enemy.location)
+            newflame.counter = enemy.counter
+            newflame.direction=enemy.direction
+            newflame.previous_direction=enemy.previous_direction
+            
+            game_data["enemies"].append(newflame)
+            
         elif(enemy.tier == 2):
-            game_data["enemies"].append(Enemy("Orange Flame", enemy.location))
-            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+            newflame=Enemy("Orange Flame", enemy.location)
+            newflame.counter = enemy.counter
+  
+            newflame.direction=enemy.direction
+            newflame.previous_direction=enemy.previous_direction            
+            game_data["enemies"].append(newflame)
+            
         elif(enemy.tier == 3):
-            game_data["enemies"].append(Enemy("Yellow Flame", enemy.location))
-            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+            newflame=Enemy("Yellow Flame", enemy.location)
+            newflame.counter = enemy.counter
+  
+            newflame.direction=enemy.direction
+            newflame.previous_direction=enemy.previous_direction            
+            game_data["enemies"].append(newflame)
+            
         elif(enemy.tier == 4):
-            game_data["enemies"].append(Enemy("White Flame", enemy.location))
-            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+            newflame=Enemy("White Flame", enemy.location)
+            newflame.counter = enemy.counter
+
+            newflame.direction=enemy.direction
+            newflame.previous_direction=enemy.previous_direction            
+            game_data["enemies"].append(newflame)
+            
         elif(enemy.tier == 5):
-            game_data["enemies"].append(Enemy("Blue Flame", enemy.location))
-            game_data["enemies"][len(game_data["enemies"])-1].counter = enemy.counter
+            
+            newflame=Enemy("Blue Flame", enemy.location)
+            newflame.counter = enemy.counter
+       
+            newflame.direction=enemy.direction
+            newflame.previous_direction=enemy.previous_direction            
+            game_data["enemies"].append(newflame)
+            
 

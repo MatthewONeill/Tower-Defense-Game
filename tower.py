@@ -131,7 +131,7 @@ def attack_enemy(tower, enemy, game_data):
             for enemies in targets:
                 enemies.health -= tower.damage
             tower.ani=True   
-            tower.aoe=enemy.location
+            tower.aoe=enemy.realLocation
         
         else:        
             tower.timer = 0
