@@ -41,7 +41,9 @@ class Enemy:
 #### ====================================================================================================================== ####
 
 def update_enemy(enemy, game_data,direction=None, damage=0):
-    enemy.distance+=enemy.speed
+    enemy.counter += enemy.distance_per_frame
+    
+    enemy.distance+=enemy.distance_per_frame
     if enemy.wait_to_move == 12/enemy.speed:
         # check right
         if (game_data["map"].map_data[(enemy.location[0] + 1, enemy.location[1])][
@@ -79,8 +81,10 @@ def update_enemy(enemy, game_data,direction=None, damage=0):
                 enemy.reach_the_end = True
                 
 
-    if enemy.wait_to_move == 0:
+    if enemy.counter>=40.9:
+        enemy.counter = 0
         #check right
+        
         if enemy.direction == "right":
             if enemy.reach_the_end:
                 game_data["endGame"] -= enemy.damage
@@ -110,6 +114,7 @@ def update_enemy(enemy, game_data,direction=None, damage=0):
             enemy.previous_direction = "up"
 
         enemy.wait_to_move = 12/enemy.speed
+        
 
     elif game_data["time_counter"] == game_data["frame_rate"]:
         # 1 second
@@ -123,6 +128,8 @@ def render_enemy(enemy, screen, settings):
     Input: Enemy Object, screen (pygame display), Settings Object
     Output: None
     '''
+    if enemy.counter>40.9:
+        enemy.counter=40.9    
     if enemy.direction == "right":
         screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
                     (enemy.location[0] * settings.tile_size[0] + enemy.counter, enemy.location[1] * settings.tile_size[1]))
@@ -140,9 +147,7 @@ def render_enemy(enemy, screen, settings):
         screen.blit(pygame.transform.smoothscale(enemy.sprite, (40, 40)),
                     (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] - enemy.counter))
         enemy.realLocation = (enemy.location[0] * settings.tile_size[0], enemy.location[1] * settings.tile_size[1] - enemy.counter)
-    enemy.counter += enemy.distance_per_frame
-    if enemy.counter > 40.9:
-        enemy.counter = 0
+    
 
 def downgrade_enemy(enemy, game_data):
     if(enemy.tier > 1):
@@ -153,15 +158,17 @@ def downgrade_enemy(enemy, game_data):
             newflame.counter = enemy.counter
             newflame.direction=enemy.direction
             newflame.previous_direction=enemy.previous_direction
-            
+            update_enemy(newflame,game_data)
             game_data["enemies"].append(newflame)
+            
             
         elif(enemy.tier == 2):
             newflame=Enemy("Orange Flame", enemy.location)
             newflame.counter = enemy.counter
   
             newflame.direction=enemy.direction
-            newflame.previous_direction=enemy.previous_direction            
+            newflame.previous_direction=enemy.previous_direction   
+            update_enemy(newflame,game_data)
             game_data["enemies"].append(newflame)
             
         elif(enemy.tier == 3):
@@ -169,7 +176,9 @@ def downgrade_enemy(enemy, game_data):
             newflame.counter = enemy.counter
   
             newflame.direction=enemy.direction
-            newflame.previous_direction=enemy.previous_direction            
+            newflame.previous_direction=enemy.previous_direction       
+            update_enemy(newflame,game_data)
+            
             game_data["enemies"].append(newflame)
             
         elif(enemy.tier == 4):
@@ -178,6 +187,7 @@ def downgrade_enemy(enemy, game_data):
 
             newflame.direction=enemy.direction
             newflame.previous_direction=enemy.previous_direction            
+            update_enemy(newflame,game_data)
             game_data["enemies"].append(newflame)
             
         elif(enemy.tier == 5):
@@ -186,7 +196,9 @@ def downgrade_enemy(enemy, game_data):
             newflame.counter = enemy.counter
        
             newflame.direction=enemy.direction
-            newflame.previous_direction=enemy.previous_direction            
+            newflame.previous_direction=enemy.previous_direction 
+            update_enemy(newflame,game_data)
             game_data["enemies"].append(newflame)
+        enemy.counter += enemy.distance_per_frame
             
 

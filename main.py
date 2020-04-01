@@ -110,6 +110,7 @@ def update(game_data):
             receive_currency(game_data)
             downgrade_enemy(enemy, game_data)
             game_data["enemies"].remove(enemy)
+            
         else:
             update_enemy(enemy, game_data)
             
