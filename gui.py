@@ -15,7 +15,7 @@ class Gui:
         self.over=False
         self.holding=None
         self.buttonDown=False
-        self.speed=10;
+        self.speed=1
         self.pause=False
         self.buttonList=[]
         self.graphicList=[]
