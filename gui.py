@@ -29,9 +29,9 @@ class Gui:
         self.shop=shop;
     def setData(self,data): #Initialize some values
         self.game_data=data 
-        tempbutton= Button((800,700),(100,50),self.speedToggle,self.graphicList[0])
+        tempbutton= Button((820,700),(100,50),self.speedToggle,self.graphicList[0])
         self.buttonList.append(tempbutton);
-        tempbutton= Button((800,590),(50,50),self.pauseToggle,self.graphicList[3])
+        tempbutton= Button((820,590),(50,50),self.pauseToggle,self.graphicList[3])
         self.buttonList.append(tempbutton);        
         
     def speedToggle(self):
@@ -165,7 +165,7 @@ class Gui:
         for button in self.buttonList:
             screen.blit(button.sprite, button.position)
             
-        text = game_data["font"].render('HP: '+str(game_data["endGame"]), True, (255,255,255))
+        text = game_data["font"].render('HP: '+str(game_data["endGame"]), True, (55,255,55))
         textRect = text.get_rect()
         textRect.center = (900, 575)
         screen.blit(text, textRect)

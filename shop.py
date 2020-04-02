@@ -16,6 +16,7 @@ class Shop:
         Input: theme (string), Settings Oject
         Output: A Shop Object
         '''
+        
         self.location = [800, 0]
         self.size = [200, settings.window_size[1]]
         self.shop_data = {}
@@ -24,12 +25,13 @@ class Shop:
         self.ui_data = {}
         for ui in csv_loader("data/ui.csv"):
             if ui[0] == theme:
-                self.ui_data["shop_background"] = pygame.image.load(ui[3]).convert_alpha()
+                self.ui_data["shop_background"] = pygame.transform.scale(pygame.image.load("assets\\ui\\shop_background.png").convert_alpha(), (200,1000))
                 self.ui_data["currency"] = pygame.transform.scale(pygame.image.load(ui[4]).convert_alpha(), (24, 24))
                 self.ui_data["item_size"] = int(ui[5])
                 self.ui_data["item_background"] = pygame.transform.scale(pygame.image.load(ui[1]).convert_alpha(), (self.ui_data["item_size"], self.ui_data["item_size"]))
                 self.ui_data["item_background_disabled"] = pygame.transform.scale(pygame.image.load(ui[2]).convert_alpha(), (self.ui_data["item_size"], self.ui_data["item_size"]))
                 self.ui_data["radius_sprite"] = pygame.image.load(ui[6]).convert_alpha()
+                self.infobox=pygame.transform.scale(pygame.image.load(ui[1]).convert_alpha(), (200,300))
         self.selected_item = None
         self.clicked_item = None
         item_location = [self.location[0] + (self.size[0] - 2 * self.ui_data["item_size"]) / 3, self.location[1] + (self.size[0] - 2 * self.ui_data["item_size"]) / 3 + 150]
@@ -69,9 +71,9 @@ def render_shop(shop, screen, settings, current_currency):
     Output: None
     '''
     # Rendering Shop Background
-    for row in range(settings.window_size[1] // settings.tile_size[1]):
-        for col in range(settings.window_size[0] // settings.tile_size[0]):
-            screen.blit(shop.ui_data["shop_background"], (shop.location[0] + col * settings.tile_size[0], shop.location[1] + row * settings.tile_size[1]))
+
+    screen.blit(shop.ui_data["shop_background"], (800,0))
+    screen.blit(shop.infobox, (800,500))
 
     # Rendering Top Section
     towers_text = settings.title_font.render("Towers", True, (254, 207, 0))
@@ -94,8 +96,8 @@ def render_shop(shop, screen, settings, current_currency):
     
     # Handle Player Currency
     current_currency_text = settings.font.render("{}".format(current_currency), True, (254, 207, 0))
-    screen.blit(current_currency_text, (shop.location[0] + current_currency_text.get_width() // 3 + 30, 645))
-    screen.blit(shop.ui_data["currency"], (shop.location[0] + 5, 650))
+    screen.blit(current_currency_text, (shop.location[0] + current_currency_text.get_width() // 3 + 50, 645))
+    screen.blit(shop.ui_data["currency"], (shop.location[0] + 25, 650))
 
     # Handle Mouse Over Tower
     if shop.selected_item is not None:
