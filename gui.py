@@ -11,9 +11,11 @@ import math
 class Gui:
     #Initialize the GUI
     def __init__(self):
+        self.won=False
+        self.over=False
         self.holding=None
         self.buttonDown=False
-        self.speed=1;
+        self.speed=10;
         self.pause=False
         self.buttonList=[]
         self.graphicList=[]
@@ -155,7 +157,18 @@ class Gui:
         self.buttonList.append(tempbutton);
         tempbutton= Button((450,400),(100,100),self.exitGame,self.graphicList[1])
         self.buttonList.append(tempbutton);        
+    def winGame(self):
+        self.buttonList=[]
+        self.graphicList=[]
+        self.graphicList.append(pygame.transform.scale(pygame.image.load("assets\\ui\\replay.png").convert_alpha(), (100,100)))
+        self.graphicList.append(pygame.transform.scale(pygame.image.load("assets\\ui\\exit.png").convert_alpha(), (100,100)))
+        tempbutton= Button((250,400),(100,100),self.replayGame,self.graphicList[0])
+        self.buttonList.append(tempbutton);
+        tempbutton= Button((450,400),(100,100),self.exitGame,self.graphicList[1])
+        self.buttonList.append(tempbutton); 
+        self.won=True
     def render(self,game_data):
+        
         (mX, mY) = pygame.mouse.get_pos() #Get mouse position
         screen=game_data["screen"]
         if self.holding!=None: #If user is holding unit, render it
@@ -169,6 +182,12 @@ class Gui:
         textRect = text.get_rect()
         textRect.center = (900, 575)
         screen.blit(text, textRect)
+        
+        if self.won:
+            text = game_data["font"].render("YOU WIN!", True, (255,255,55))
+            textRect = text.get_rect()
+            textRect.center = (450, 325)
+            screen.blit(text, textRect)            
         pass
     
     

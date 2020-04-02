@@ -53,6 +53,7 @@ def update_tower(tower, game_data):
         else:
             tower.aniTimer-=1
     tower.inRange = False
+    tower.enemy=None
     if tower.name=="Hoser":
         check_enemy(tower, game_data)
     elif tower.name=="Water Balloons":

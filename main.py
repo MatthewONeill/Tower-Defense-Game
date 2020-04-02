@@ -111,6 +111,8 @@ def update(game_data):
         game_data["spawn_interval"] = 6 #reset spawn_interval
         if game_data["enemy_index"] < len (game_data["enemy_list"]):
             game_data["enemy_index"] += 1
+    if  game_data["enemy_index"] == len (game_data["enemy_list"]):
+        game_data["gui"].over=True
 
     for enemy in game_data["enemies"]:
         
@@ -134,10 +136,12 @@ def update(game_data):
     else:
         game_data["time_counter"] += 1
 
-    if(game_data["endGame"] <= 0):
+    if game_data["endGame"] <= 0:
         
         #game_data["stay_open"]=False
         game_data["gui"].endGame()
+    if game_data["gui"].over and len(game_data["enemies"])==0:
+        game_data["gui"].winGame()
 
 
     ## Replace this with code to update the Towers ##
